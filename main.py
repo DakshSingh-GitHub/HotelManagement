@@ -1,3 +1,4 @@
+
 import mysql.connector as sql
 import mysql.connector.errors
 from colorama import Fore, Style
@@ -306,7 +307,7 @@ def createBooking(date_format="%Y-%m-%d"):
         cursor.execute("SET FOREIGN_KEY_CHECKS=0;")
         cursor.execute(sql_bookingTable)
         cursor.execute("SET FOREIGN_KEY_CHECKS=1;")
-        print(Fore.GREEN + f"[SUCCESS] Booking successful for customer")  # type:ignore
+        print(Fore.GREEN + "[SUCCESS] Booking successful for customer")  # type:ignore
 
     # except mysql.connector.errors.ProgrammingError:
     #     print("[404] ACCESS DENIED !!")
@@ -320,7 +321,7 @@ def createBooking(date_format="%Y-%m-%d"):
         sql_bookingTable = f"INSERT INTO booking (book_id, guest_id, room_id, tariff, service, discount) VALUES ({new_book + 1}, {last_book + 1}, {room_id}, {tariff}, {service}, '{discount}')"
         cursor.execute(sql_customerTable)
         cursor.execute(sql_bookingTable)
-        print(Fore.GREEN + f"[SUCCESS] Booking successful for customer")  # type:ignore
+        print(Fore.GREEN + "[SUCCESS] Booking successful for customer")  # type:ignore
         print("Your Customer ID is: " + str(last_book + 1))
 
     except UnboundLocalError:
@@ -352,7 +353,8 @@ def updateStay(c_id, newDate, date_format="%Y-%m-%d"):
     cursor.execute("SELECT c_id from customer")
     data = cursor.fetchall()
     d = []
-    for i in data: d.append(i[0])
+    for i in data: 
+        d.append(i[0])
     if c_id not in d:
         raise InvalidCustomer("Invalid customer ID")
     else:
@@ -401,8 +403,10 @@ def allot_fare():
         cursor.execute(f"SELECT room_id, tariff FROM room WHERE room_id = '{room_id}'")
 
         data = cursor.fetchall()
-        if data == []: pass
-        else: print(f"Room ID " + Fore.YELLOW + f"{data[0][0]}" + Fore.CYAN + f" has current rent set to" + Fore.YELLOW + f"{data[0][1]}INR")
+        if data == []:
+            pass
+        else: 
+            print("Room ID " + Fore.YELLOW + f"{data[0][0]}" + Fore.CYAN + " has current rent set to" + Fore.YELLOW + f"{data[0][1]}INR")
 
         new_fare = int(input(Fore.CYAN + "Enter the new fare: "))
         cursor.execute(
@@ -418,7 +422,8 @@ def allot_fare():
         cursor.execute(f"SELECT room_id, tariff FROM room WHERE room_type = '{room_type}'")
 
         data = cursor.fetchall()
-        if data == []: pass
+        if data == []: 
+            pass
         else:
             print("Room ID\t|\tTariff")
             for i in data:
@@ -455,7 +460,8 @@ def get_tariff(room_type):
 def get_tariff_for_all_rooms():
     cursor.execute("SELECT room_id, tariff FROM room")
     result = cursor.fetchall()
-    if result == []: pass
+    if result == []: 
+        pass
     else:
         print(Fore.GREEN + "Room ID\t|\tTariff")
         for i in result:
@@ -559,7 +565,7 @@ def calculate_bill(customer_id, date_changed="2024-01-01", date_format="%Y-%m-%d
             print("-----------------------------------")
             print(Style.RESET_ALL, end="")
 
-        except TypeError as e:
+        except TypeError:
             print(Fore.RED + "Customer ID does not exist.")
             print(Style.RESET_ALL, end="")
     except Exception as e:
@@ -646,10 +652,10 @@ def bug_temp_get_bill(customer_id):
         remaining = int(bill[-1]) - int(addresses[c][2])
         
         if remaining <= 0 or remaining > int(bill[-1]):
-            print(Fore.GREEN + f"CHECKOUT")
+            print(Fore.GREEN + "CHECKOUT")
             print(f"Remaining Amount: {remaining}")
         elif remaining < int(bill[8]):
-            print(Fore.RED + f"No CHECKOUT UNLESS BILL IS PAID")
+            print(Fore.RED + "No CHECKOUT UNLESS BILL IS PAID")
             print(f"Remaining Amount: {remaining}")
         print(f"Total Bill: Rs. {bill[-1]}")
         print("-----------------------------------")
@@ -807,7 +813,7 @@ def get_booking_counts(start_date, end_date):
             cursor.execute(query)
             results = cursor.fetchall()
             return "Booking Count -> " + str(len(results))
-        except IndexError as e:
+        except IndexError:
             print("Check the dates\n\t1) Either they are same\n\t2) Or they are invalid")
     
     except MonthLimitExceedError:
@@ -969,8 +975,8 @@ def getAllCustomers(date_format="%Y-%m-%d"):
                 # dt = datetime.strptime(str(i[5]), date_format)
                 print("Check Out Date: " + checkoutdate)  # type: ignore
                 print("Total Payable Amount: " + str(i[9]))
-                print(Fore.RED + f"-------------------------------------------")
-            except:
+                print(Fore.RED + "-------------------------------------------")
+            except Exception:
                 c += 1
                 cursor.execute(
                     f"SELECT checkin, checkout FROM customer WHERE c_id = {1000+c}"
@@ -1002,7 +1008,7 @@ def getAllCustomers(date_format="%Y-%m-%d"):
                 # dt = datetime.strptime(str(i[5]), date_format)
                 print("Check Out Date: " + checkoutdate)  # type: ignore
                 print("Total Payable Amount: " + str(i[8]))
-                print(Fore.RED + f"------------------------------------------")
+                print(Fore.RED + "------------------------------------------")
             print(Style.RESET_ALL, end="")
             c += 1
 
@@ -1024,7 +1030,7 @@ def payment_check(c_id):
     payable = cursor.fetchone()
     cursor.execute(f"SELECT `paid` FROM customer WHERE `c_id` = {c_id}")
     paid = cursor.fetchone()
-    if payable == None or paid == None:
+    if payable is None or paid is None:
         raise TypeError
     else:
         if payable == paid:
@@ -1044,7 +1050,7 @@ def update_bill(c_id, amount):
     """
     cursor.execute(f"SELECT `paid` FROM customer WHERE `c_id` = {c_id}")
     paid = cursor.fetchone()
-    if paid[0] == None:
+    if paid[0] is None:
         paid = 0
         print("Paid Amount: " + str(paid + amount))
 
@@ -1055,7 +1061,7 @@ def update_bill(c_id, amount):
             print(Fore.RED + f"Bill for customer {c_id} is already paid.")
             print(Style.RESET_ALL, end="")
         elif amount > (int(payable[0]) - int(paid)):
-            print(Fore.RED + f"Payment amount cannot be greater than the payable amount.")
+            print(Fore.RED + "Payment amount cannot be greater than the payable amount.")
             print("Hand Over Change of " + str(int(amount) - int(payable[0]) + int(paid)))
             if int(amount) - int(payable[0]) + int(paid) > 0:
                 cursor.execute(f"UPDATE customer SET `paid` = {int(paid) + amount} WHERE `c_id` = {c_id}")
@@ -1085,7 +1091,7 @@ def update_bill(c_id, amount):
             print(Fore.RED + f"Bill for customer {c_id} is already paid.")
             print(Style.RESET_ALL, end="")
         elif amount > (int(payable[0]) - int(paid[0])):
-            print(Fore.RED + f"Payment amount cannot be greater than the payable amount.")
+            print(Fore.RED + "Payment amount cannot be greater than the payable amount.")
             print("Hand Over Change of " + str(int(amount) - int(payable[0]) + int(paid[0])))
             if int(amount) - int(payable[0]) + int(paid[0]) > 0:
                 cursor.execute(f"UPDATE customer SET `paid` = {int(paid[0]) + amount} WHERE `c_id` = {c_id}")
@@ -1202,7 +1208,7 @@ def AdminMenu():
         print("=============================================================")
         return choice
 
-    except ValueError as e:
+    except ValueError:
         print(Fore.RED + "Invalid input. Please enter an integer.")
         print(Style.RESET_ALL, end="")
         print("=============================================================")
@@ -1239,7 +1245,7 @@ def FrontEndMenu():
         print("=============================================================")
         return choice
 
-    except ValueError as e:
+    except ValueError:
         print(Fore.RED + "Invalid input. Please enter an integer.")
         print(Style.RESET_ALL, end="")
         print("=============================================================")
@@ -1260,7 +1266,7 @@ if Admin(userID, passwd):
                 try:
                     customer_id = int(input("Enter Customer Id: "))
                     bug_temp_get_bill(customer_id)
-                except:
+                except Exception:
                     print(Fore.RED + "Maybe Invalid Input choices")
                     print(Style.RESET_ALL, end="")
                 finally:
@@ -1288,7 +1294,7 @@ if Admin(userID, passwd):
                     date = str(input(Fore.BLUE + "Enter date: "))
                     print(Style.RESET_ALL, end="")
                     getBookingForDay(date)
-                except:
+                except Exception:
                     print(Fore.RED + "Maybe Invalid Input choices")
                     print(Style.RESET_ALL, end="")
                 finally:
@@ -1306,7 +1312,7 @@ if Admin(userID, passwd):
                         continue
                     print(Style.RESET_ALL, end="")
                     getBookingBetweenDays(start_date, end_date)
-                except:
+                except Exception:
                     print(Fore.RED + "Maybe Invalid Input choices")
                     print(Style.RESET_ALL, end="")
                 finally:
@@ -1322,7 +1328,7 @@ if Admin(userID, passwd):
                     end_date = str(input("Enter end date: "))
                     print(Style.RESET_ALL, end="")
                     print(get_booking_counts(start_date, end_date))
-                except:
+                except Exception:
                     print(Fore.RED + "Maybe Invalid Input choices")
                     print(Style.RESET_ALL, end="")
                 finally:
@@ -1336,7 +1342,7 @@ if Admin(userID, passwd):
                     else:
                         print(Fore.RED + "Invalid date")
                         print(Style.RESET_ALL, end="")
-                except:
+                except Exception:
                     print(Fore.RED + "Maybe Invalid Input choices")
                     print(Style.RESET_ALL, end="")
                 finally:
@@ -1351,7 +1357,7 @@ if Admin(userID, passwd):
                         summary()
                     else:
                         summary(date)
-                except:
+                except Exception:
                     print(Fore.RED + "Maybe Wrong input values")
                     print(Style.RESET_ALL, end='')
                 finally:
@@ -1362,7 +1368,7 @@ if Admin(userID, passwd):
                     customer = int(input("Enter Customer Id: "))
                     try:
                         payment_check(customer)
-                    except:
+                    except Exception:
                         print(Fore.RED + "Wrong Customer ID" + Style.RESET_ALL)
                 except ValueError:
                     print(Fore.RED + "Might be that the User ID is wrong")
@@ -1402,7 +1408,7 @@ if Admin(userID, passwd):
                         print(Style.RESET_ALL, end='')
                     else:
                         CreateUser(user_id, pass_id)
-                except:
+                except Exception:
                     print(Fore.RED + "Maybe Invalid Input choices")
                     print(Style.RESET_ALL, end="")
                 finally:
@@ -1416,7 +1422,7 @@ if Admin(userID, passwd):
                 try:
                     user_id = str(input("Enter User ID: "))
                     DeleteUser(user_id)
-                except:
+                except Exception:
                     print(Fore.RED + "Maybe Invalid Input choices")
                     print(Style.RESET_ALL, end="")
                 finally:
@@ -1438,7 +1444,7 @@ if Admin(userID, passwd):
                 os.system("cls")
     # except TypeError as e:
     #     print(Fore.RED + "An error occured when opening database")
-    except NameError as e:
+    except NameError:
         print(
             Fore.RED + "Check, there's some value that is'nt defined or not defined properly"
         )
@@ -1462,7 +1468,7 @@ elif AuthenticateUser(userID, passwd) and not Admin(userID, passwd):
                 try:
                     customer_id = int(input("Enter Customer Id: "))
                     bug_temp_get_bill(customer_id)
-                except:
+                except Exception:
                     print(Fore.RED + "Maybe Invalid Input choices")
                     print(Style.RESET_ALL, end="")
                 finally:
@@ -1490,7 +1496,7 @@ elif AuthenticateUser(userID, passwd) and not Admin(userID, passwd):
                     date = str(input(Fore.BLUE + "Enter date: "))
                     print(Style.RESET_ALL, end="")
                     getBookingForDay(date)
-                except:
+                except Exception:
                     print(Fore.RED + "Maybe Invalid Input choices")
                     print(Style.RESET_ALL, end="")
                 finally:
@@ -1508,7 +1514,7 @@ elif AuthenticateUser(userID, passwd) and not Admin(userID, passwd):
                         continue
                     print(Style.RESET_ALL, end="")
                     getBookingBetweenDays(start_date, end_date)
-                except:
+                except Exception:
                     print(Fore.RED + "Maybe Invalid Input choices")
                     print(Style.RESET_ALL, end="")
                 finally:
@@ -1524,7 +1530,7 @@ elif AuthenticateUser(userID, passwd) and not Admin(userID, passwd):
                     end_date = str(input("Enter end date: "))
                     print(Style.RESET_ALL, end="")
                     print(get_booking_counts(start_date, end_date))
-                except:
+                except Exception:
                     print(Fore.RED + "Maybe Invalid Input choices")
                     print(Style.RESET_ALL, end="")
                 finally:
@@ -1538,7 +1544,7 @@ elif AuthenticateUser(userID, passwd) and not Admin(userID, passwd):
                     else:
                         print(Fore.RED + "Invalid date")
                         print(Style.RESET_ALL, end="")
-                except:
+                except Exception:
                     print(Fore.RED + "Maybe Invalid Input choices")
                     print(Style.RESET_ALL, end="")
                 finally:
@@ -1553,7 +1559,7 @@ elif AuthenticateUser(userID, passwd) and not Admin(userID, passwd):
                         summary()
                     else:
                         summary(date)
-                except:
+                except Exception:
                     print(Fore.RED + "Maybe Wrong input values")
                     print(Style.RESET_ALL, end='')
                 finally:
@@ -1594,9 +1600,9 @@ elif AuthenticateUser(userID, passwd) and not Admin(userID, passwd):
                     break
             else:
                 print("Invalid choice")
-    except TypeError as e:
+    except TypeError:
         print(Fore.RED + "An error occured when opening database")
-    except NameError as e:
+    except NameError:
         print(
             Fore.RED + "Conenction wouldn't be created with wrong password or username"
         )
