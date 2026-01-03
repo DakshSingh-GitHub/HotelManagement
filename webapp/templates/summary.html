@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h3>Daily Summary</h3>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    <div class="form-group">
+                        <label for="summary_date">Date (YYYY-MM-DD, optional)</label>
+                        <input type="date" name="summary_date" id="summary_date" class="form-control">
+                        <small class="form-text text-muted">Leave blank for today's summary.</small>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Get Summary</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if summary_report %}
+<div class="row justify-content-center mt-4">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h3>Summary Report for {{ summary_report.date }}</h3>
+            </div>
+            <div class="card-body">
+                <p><strong>Number of Check-ins:</strong> {{ summary_report.num_checkins }}</p>
+                <p><strong>Number of Check-outs:</strong> {{ summary_report.num_checkouts }}</p>
+                <p><strong>Total Revenue:</strong> Rs. {{ summary_report.total_revenue }}</p>
+                <p><strong>Collected Revenue:</strong> Rs. {{ summary_report.collected_revenue }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

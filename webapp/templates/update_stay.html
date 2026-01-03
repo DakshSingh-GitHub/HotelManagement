@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h3>Update Customer Stay</h3>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    <div class="form-group">
+                        <label for="customer_id">Customer ID</label>
+                        <input type="number" name="customer_id" id="customer_id" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="new_checkout_date">New Checkout Date</label>
+                        <input type="date" name="new_checkout_date" id="new_checkout_date" class="form-control" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Update Stay</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

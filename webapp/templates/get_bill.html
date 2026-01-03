@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h3>Get Customer Bill</h3>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    <div class="form-group">
+                        <label for="customer_id">Customer ID</label>
+                        <input type="number" name="customer_id" id="customer_id" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="date_changed">Date Tariff Changed (YYYY-MM-DD, optional)</label>
+                        <input type="date" name="date_changed" id="date_changed" class="form-control">
+                        <small class="form-text text-muted">Leave blank if tariff has not changed or is irrelevant.</small>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Get Bill</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% if bill_details %}
+<div class="row justify-content-center mt-4">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h3>Bill Details for Customer ID: {{ bill_details.customer_id }}</h3>
+            </div>
+            <div class="card-body">
+                <p><strong>Customer Name:</strong> {{ bill_details.customer_name }}</p>
+                <p><strong>Address:</strong> {{ bill_details.address }}</p>
+                <p><strong>Gender:</strong> {{ bill_details.gender }}</p>
+                <p><strong>Check-in Date:</strong> {{ bill_details.checkin_date }}</p>
+                <p><strong>Check-out Date:</strong> {{ bill_details.checkout_date }}</p>
+                <p><strong>Room ID:</strong> {{ bill_details.room_id }}</p>
+                <p><strong>Tariff:</strong> Rs. {{ bill_details.tariff }}</p>
+                <p><strong>Service:</strong> {{ bill_details.service }}</p>
+                <p><strong>Discount:</strong> {{ bill_details.discount }}%</p>
+                <hr>
+                <p><strong>Subtotal:</strong> Rs. {{ bill_details.subtotal }}</p>
+                <p><strong>GST ({{ bill_details.gst_percentage }}%):</strong> Rs. {{ bill_details.gst_amount }}</p>
+                <p><strong>Total Bill:</strong> Rs. {{ bill_details.total_bill }}</p>
+                <p><strong>Current Paid Amount:</strong> Rs. {{ bill_details.paid_amount }}</p>
+                <p><strong>Remaining Amount:</strong> Rs. {{ bill_details.remaining_amount }}</p>
+                <p><strong>Status:</strong> {{ bill_details.payment_status }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

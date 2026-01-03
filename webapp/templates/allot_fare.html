@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h3>Allot/Update Room Fares</h3>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    <div class="form-group">
+                        <label for="fare_option">Choose Option:</label>
+                        <select name="fare_option" id="fare_option" class="form-control" onchange="toggleFareOptions()" required>
+                            <option value="">--Select an option--</option>
+                            <option value="1">Add/Change fare for a specific Room ID</option>
+                            <option value="2">Change fare for a Room Type</option>
+                        </select>
+                    </div>
+
+                    <div id="room_id_option" style="display: none;">
+                        <div class="form-group">
+                            <label for="room_id">Room ID</label>
+                            <input type="number" name="room_id" id="room_id" class="form-control">
+                        </div>
+                    </div>
+
+                    <div id="room_type_option" style="display: none;">
+                        <div class="form-group">
+                            <label for="room_type">Room Type</label>
+                            <select name="room_type" id="room_type" class="form-control">
+                                <option value="np">Normal</option>
+                                <option value="s">Super</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="new_fare">New Fare</label>
+                        <input type="number" name="new_fare" id="new_fare" class="form-control" required>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Update Fare</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function toggleFareOptions() {
+    var fareOption = document.getElementById("fare_option").value;
+    var roomIdOption = document.getElementById("room_id_option");
+    var roomTypeOption = document.getElementById("room_type_option");
+
+    if (fareOption === "1") {
+        roomIdOption.style.display = "block";
+        roomTypeOption.style.display = "none";
+        document.getElementById("room_type").removeAttribute("required");
+        document.getElementById("room_id").setAttribute("required", "required");
+    } else if (fareOption === "2") {
+        roomIdOption.style.display = "none";
+        roomTypeOption.style.display = "block";
+        document.getElementById("room_id").removeAttribute("required");
+        document.getElementById("room_type").setAttribute("required", "required");
+    } else {
+        roomIdOption.style.display = "none";
+        roomTypeOption.style.display = "none";
+        document.getElementById("room_id").removeAttribute("required");
+        document.getElementById("room_type").removeAttribute("required");
+    }
+}
+</script>
+{% endblock %}

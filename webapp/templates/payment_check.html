@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h3>Check Payment Status</h3>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    <div class="form-group">
+                        <label for="customer_id">Customer ID</label>
+                        <input type="number" name="customer_id" id="customer_id" class="form-control" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Check Payment</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if payment_status_data %}
+<div class="row justify-content-center mt-4">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h3>Payment Details for Customer ID: {{ payment_status_data.customer_id }}</h3>
+            </div>
+            <div class="card-body">
+                <p><strong>Total Payable:</strong> Rs. {{ payment_status_data.payable }}</p>
+                <p><strong>Amount Paid:</strong> Rs. {{ payment_status_data.paid }}</p>
+                <p><strong>Remaining Amount:</strong> Rs. {{ payment_status_data.remaining }}</p>
+                <p><strong>Payment Status:</strong> {{ payment_status_data.status }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

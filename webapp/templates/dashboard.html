@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="jumbotron">
+    <h1 class="display-4">Welcome to Hotel Shahi Rajdarbar</h1>
+    <p class="lead">Your one-stop solution for hotel management.</p>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h3>Admin Menu</h3>
+            </div>
+            <ul class="list-group list-group-flush">
+                {% if session['is_admin'] %}
+                <a href="{{ url_for('create_user') }}" class="list-group-item list-group-item-action">Create User</a>
+                <a href="{{ url_for('allot_fare') }}" class="list-group-item list-group-item-action">Allot Fare</a>
+                <a href="{{ url_for('delete_user') }}" class="list-group-item list-group-item-action">Delete User</a>
+                <a href="{{ url_for('add_room') }}" class="list-group-item list-group-item-action">Add a Room</a>
+                <a href="{{ url_for('view_fares') }}" class="list-group-item list-group-item-action">See All Fares</a>
+                <a href="{{ url_for('display_users') }}" class="list-group-item list-group-item-action">Display All Users</a>
+                {% else %}
+                <li class="list-group-item">You are not an admin.</li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h3>Main Menu</h3>
+            </div>
+            <div class="list-group list-group-flush">
+                <a href="{{ url_for('create_booking') }}" class="list-group-item list-group-item-action">Create Booking</a>
+                <a href="{{ url_for('get_bill') }}" class="list-group-item list-group-item-action">Get Bill of a Customer</a>
+                <a href="{{ url_for('get_all_customers') }}" class="list-group-item list-group-item-action">Get All Customers</a>
+                <a href="{{ url_for('update_stay') }}" class="list-group-item list-group-item-action">Update Stay</a>
+                <a href="{{ url_for('get_booking_for_day') }}" class="list-group-item list-group-item-action">Get Booking for a day</a>
+                <a href="{{ url_for('get_bookings_between_days') }}" class="list-group-item list-group-item-action">Get Bookings between two dates</a>
+                <a href="{{ url_for('cancel_booking') }}" class="list-group-item list-group-item-action">Cancel Booking</a>
+                <a href="{{ url_for('booking_counts') }}" class="list-group-item list-group-item-action">Booking Counts</a>
+                <a href="{{ url_for('occupancy') }}" class="list-group-item list-group-item-action">Occupancy</a>
+                <a href="{{ url_for('summary') }}" class="list-group-item list-group-item-action">Summary</a>
+                <a href="{{ url_for('payment_check') }}" class="list-group-item list-group-item-action">Payment Check</a>
+                <a href="{{ url_for('update_paid_amount') }}" class="list-group-item list-group-item-action">Update Paid Amount</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

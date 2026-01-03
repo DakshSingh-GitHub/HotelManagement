@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h3>Get Bookings for a Specific Day</h3>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    <div class="form-group">
+                        <label for="booking_date">Date (YYYY-MM-DD)</label>
+                        <input type="date" name="booking_date" id="booking_date" class="form-control" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Get Bookings</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if bookings %}
+<div class="row justify-content-center mt-4">
+    <div class="col-md-10">
+        <div class="card">
+            <div class="card-header">
+                <h3>Bookings for {{ request.form.booking_date }}</h3>
+            </div>
+            <div class="card-body">
+                {% for booking in bookings %}
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Booking ID: {{ booking.book_id }}</h5>
+                        <p class="card-text"><strong>Guest ID:</strong> {{ booking.guest_id }}</p>
+                        <p class="card-text"><strong>Customer Name:</strong> {{ booking.c_name }}</p>
+                        <p class="card-text"><strong>Address:</strong> {{ booking.address }}</p>
+                        <p class="card-text"><strong>Gender:</strong> {{ booking.gender }}</p>
+                        <p class="card-text"><strong>Age:</strong> {{ booking.age }}</p>
+                        <p class="card-text"><strong>Room ID:</strong> {{ booking.room_id }}</p>
+                        <p class="card-text"><strong>Booking Tariff:</strong> {{ booking.tariff }}</p>
+                        <p class="card-text"><strong>Service ID:</strong> {{ booking.service }}</p>
+                        <p class="card-text"><strong>Check In:</strong> {{ booking.checkin }}</p>
+                        <p class="card-text"><strong>Check Out:</strong> {{ booking.checkout }}</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

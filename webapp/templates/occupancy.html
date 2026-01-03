@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h3>Room Occupancy for a Day</h3>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    <div class="form-group">
+                        <label for="occupancy_date">Date (YYYY-MM-DD)</label>
+                        <input type="date" name="occupancy_date" id="occupancy_date" class="form-control" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Check Occupancy</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if occupancy_data %}
+<div class="row justify-content-center mt-4">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h3>Occupancy for {{ request.form.occupancy_date }}</h3>
+            </div>
+            <div class="card-body">
+                {% if occupancy_data.occupied_rooms %}
+                <p>Number of occupied rooms: <strong>{{ occupancy_data.num_occupied_rooms }}</strong></p>
+                <h5>Occupied Room IDs:</h5>
+                <ul class="list-group">
+                    {% for room_id in occupancy_data.occupied_rooms %}
+                    <li class="list-group-item">{{ room_id }}</li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                <p>No rooms occupied on this date.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

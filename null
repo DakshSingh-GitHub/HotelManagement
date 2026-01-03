@@ -1,0 +1,3 @@
+I have applied dark mode styles to `webapp/static/css/style.css`. The changes are comprehensive enough to theme the entire website as requested without further modifications to `base.html`.
+
+This completes the request to make the entire website dark mode themed.

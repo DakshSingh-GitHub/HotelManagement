@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h3>Room Fares</h3>
+            </div>
+            <div class="card-body">
+                {% if rooms %}
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Room ID</th>
+                            <th>Tariff</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for room in rooms %}
+                        <tr>
+                            <td>{{ room[0] }}</td>
+                            <td>{{ room[1] }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                <p>No room fares to display.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
