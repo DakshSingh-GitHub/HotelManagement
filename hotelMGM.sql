@@ -2,6 +2,8 @@ CREATE DATABASE hotel;
 
 USE hotel;
 
+desc room;
+
 CREATE TABLE customer (
 	c_id INT PRIMARY KEY,
     c_name VARCHAR(60) NOT NULL,
@@ -14,6 +16,7 @@ CREATE TABLE customer (
 );
 
 ALTER TABLE customer ADD COLUMN plan VARCHAR(2);
+ALTER TABLE customer MODIFY COLUMN paid INT NOT NULL DEFAULT 0;
 
 CREATE TABLE room (
 	room_id INT PRIMARY KEY,
@@ -71,15 +74,20 @@ SELECT
 	c_id AS `customer id`,
     c_name AS `customer name`,
     booking.room_id as `room id`,
+    room.room_type AS `room type`,
+    room.tariff AS `tariff`,
     checkin AS `check in`,
     checkout AS `check out`,
     DATEDIFF(checkout, checkin) AS `stay`,
     booking.tariff + (room.tariff)*(DATEDIFF(checkout, checkin)) + services.tariff AS `total fare`,
     discount AS `discount`,
+    service_package AS `services`,
     (booking.tariff+(room.tariff)*(DATEDIFF(checkout, checkin))+services.tariff) - (discount/100)*(booking.tariff+(room.tariff)*(DATEDIFF(checkout, checkin))+services.tariff) AS `payable`
 FROM booking, room, customer, services
 WHERE booking.guest_id = customer.c_id AND booking.room_id = room.room_id AND booking.service = services.service_package;
 
+
+SELECT * FROM bill;
 CREATE VIEW service_alloted AS
 SELECT 
 	c_id AS `customer id`,
@@ -105,7 +113,7 @@ SELECT
     checkin AS `check in`,
     checkout AS `check out`,
     round((checkout-checkin), 0) AS `stay`,
-    upgrade AS `upgrade`
+    upgration AS `upgrade`
 FROM customer, room, booking, services
 WHERE  booking.guest_id = customer.c_id AND booking.room_id = room.room_id AND booking.service = services.service_package;
 
@@ -163,3 +171,9 @@ AND customer_list.`customer name` LIKE "%s%"
 ORDER BY `payable` ASC;
 
 
+SELECT checkin FROM customer WHERE c_id = 1003;
+SELECT room_id, tariff FROM booking WHERE guest_id = 1003;
+
+
+SELECT room_type FROM room WHERE room_id = 2001;
+SELECT address, gender, IFNULL(paid,0) from customer where c_id=1002;
